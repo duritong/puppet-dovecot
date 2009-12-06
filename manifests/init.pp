@@ -2,9 +2,7 @@
 # Copyright (C) 2009 admin@immerda.ch
 #
 
-# we take rpms from
-#  - http://atrpms.net/dist/el5/dovecot/
-#  - http://atrpms.net/dist/el5/dovecot-sieve/
+# we take rpms from fedora
 class dovecot {
-
+  include dovecot::base
 }

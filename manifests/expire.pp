@@ -3,8 +3,8 @@ class dovecot::expire {
   file{'/etc/dovecot-expire.conf':
     source => [ "puppet://$server/modules/site-dovecot/expire/${fqdn}/dovecot-expire.conf",
                 "puppet://$server/modules/site-dovecot/expire/dovecot-expire.conf",
-                "puppet://$server/modules/site/expire/${operatingsystem}/dovecot-expire.conf",
-                "puppet://$server/modules/site/expire/dovecot-expire.conf" ],
+                "puppet://$server/modules/dovecot/expire/${operatingsystem}/dovecot-expire.conf",
+                "puppet://$server/modules/dovecot/expire/dovecot-expire.conf" ],
     require => Package['dovecot'],
     notify => Service['dovecot'],
     owner => root, group => 0, mode => 0600;

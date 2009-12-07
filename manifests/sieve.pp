@@ -12,8 +12,8 @@ class dovecot::sieve {
   file{'/var/lib/dovecot-sieve/global':
     source => [ "puppet://$server/modules/site-dovecot/sieve/${fqdn}/global/",
                 "puppet://$server/modules/site-dovecot/sieve/global/",
-                "puppet://$server/modules/site/sieve/${operatingsystem}/global/",
-                "puppet://$server/modules/site/sieve/global/",
+                "puppet://$server/modules/dovecot/sieve/${operatingsystem}/global/",
+                "puppet://$server/modules/dovecot/sieve/global/",
                 "puppet://$server/modules/common/empty/" ],
     ensure => directory,
     recurse => true,

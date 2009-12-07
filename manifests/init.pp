@@ -8,5 +8,10 @@ class dovecot {
 
   if $use_shorewall {
     include shorewall::rules::pop3
+    include shorewall::rules::imap
+  }
+
+  if $use_munin {
+    include dovecot::munin
   }
 }

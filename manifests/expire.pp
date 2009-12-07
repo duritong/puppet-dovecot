@@ -16,7 +16,7 @@ class dovecot::expire {
   }
 
   file{'/usr/libexec/dovecot/expire-tool.sh':
-    source => "puppet://$server/modules/site/expire/expire-tool.sh",
+    source => "puppet://$server/modules/dovecot/expire/expire-tool.sh",
     owner => root, group => 0, mode => 0700;
   }
 

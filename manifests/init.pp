@@ -5,4 +5,8 @@
 # we take rpms from fedora
 class dovecot {
   include dovecot::base
+
+  if $use_shorewall {
+    include shorewall::rules::pop3
+  }
 }

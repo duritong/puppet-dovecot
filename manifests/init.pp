@@ -6,6 +6,10 @@
 class dovecot {
   include dovecot::base
 
+  if $dovecot_sql_sqlite or $dovecot_sql_pgsql or $dovecot_sql_mysql {
+    include dovecot::sql
+  }
+
   if $use_shorewall {
     include shorewall::rules::pop3
     include shorewall::rules::imap

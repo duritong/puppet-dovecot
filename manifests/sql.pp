@@ -1,5 +1,4 @@
 class dovecot::sql {
-  include ::dovecot
   file{'/etc/dovecot-sql.conf':
     source => [ "puppet://$server/modules/site-dovecot/sql/${fqdn}/dovecot-sql.conf",
                 "puppet://$server/modules/site-dovecot/sql/${dovecot_type}/dovecot-sql.conf",
@@ -11,9 +10,13 @@ class dovecot::sql {
     owner => root, group => 0, mode => 0600;
   }
 
-  if ($dovecot_sql_type=='mysql'){
+  if $dovecot_sql_mysql{
     include ::dovecot::sql::mysql
-  } else {
+  }
+  if $dovecot_sql_pqsql{
     include ::dovecot::sql::pgsql
+  }
+  if $dovecot_sql_sqlite{
+    include ::dovecot::sql::sqlite
   }
 }

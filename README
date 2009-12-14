@@ -1,0 +1,14 @@
+dovecot
+-------
+
+Variables:
+----------
+
+$dovecot_sql_sqlite:
+  - Whether sqlite support should be included
+
+$dovecot_sql_mysql:
+  - Whether Mysql support should be included
+
+$dovecot_sql_pgsql:
+  - Whether PostgreSQL support should be included

@@ -27,6 +27,8 @@ class dovecot::base {
       owner => root, group => 12, mode => 0660;
   }
 
+  include dovecot::logrotate
+
   service{'dovecot':
     ensure => running,
     enable => true,

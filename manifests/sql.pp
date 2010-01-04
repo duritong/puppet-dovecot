@@ -13,7 +13,7 @@ class dovecot::sql {
   if $dovecot_sql_mysql{
     include ::dovecot::sql::mysql
   }
-  if $dovecot_sql_pqsql{
+  if $dovecot_sql_pgsql{
     include ::dovecot::sql::pgsql
   }
   if $dovecot_sql_sqlite{

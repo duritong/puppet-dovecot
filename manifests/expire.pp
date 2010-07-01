@@ -15,7 +15,7 @@ class dovecot::expire {
       '': { $dovecot_expire_days = '14' }
     }
     File['/etc/cron.daily/dovecot-expire']{
-      content => "find ${dovecot_mail_location} -regex '.*/\.\(${dovecot_expire_dirs}\)\(/.*\)?\/\(cur\|new\)/.*' -type f -ctime +${dovecot_expire_days} -delete\n"
+      content => "find ${dovecot_mail_location} -regex '.*/\\.\\(${dovecot_expire_dirs}\\)\\(/.*\\)?\\/\\(cur\\|new\\)/.*' -type f -ctime +${dovecot_expire_days} -delete\n"
     }
   } else {
     File['/etc/cron.daily/dovecot-expire']{

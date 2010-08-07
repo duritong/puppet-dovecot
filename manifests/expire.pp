@@ -25,17 +25,17 @@ class dovecot::expire {
 
   if $dovecot_expire_type != 'legacy' {
     file{'/etc/dovecot-expire.conf':
-      source => [ "puppet://$server/modules/site-dovecot/expire/${fqdn}/dovecot-expire.conf",
-                  "puppet://$server/modules/site-dovecot/expire/dovecot-expire.conf",
-                  "puppet://$server/modules/dovecot/expire/${operatingsystem}/dovecot-expire.conf",
-                  "puppet://$server/modules/dovecot/expire/dovecot-expire.conf" ],
+      source => [ "puppet:///modules/site-dovecot/expire/${fqdn}/dovecot-expire.conf",
+                  "puppet:///modules/site-dovecot/expire/dovecot-expire.conf",
+                  "puppet:///modules/dovecot/expire/${operatingsystem}/dovecot-expire.conf",
+                  "puppet:///modules/dovecot/expire/dovecot-expire.conf" ],
       require => Package['dovecot'],
       notify => Service['dovecot'],
       owner => root, group => 0, mode => 0600;
     }
 
     file{'/usr/libexec/dovecot/expire-tool.sh':
-      source => "puppet://$server/modules/dovecot/expire/expire-tool.sh",
+      source => "puppet:///modules/dovecot/expire/expire-tool.sh",
       owner => root, group => 0, mode => 0700;
     }
   }

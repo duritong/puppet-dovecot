@@ -4,11 +4,11 @@ class dovecot::base {
   }
 
   file{'/etc/dovecot.conf':
-    source => [ "puppet://$server/modules/site-dovecot/config/${fqdn}/dovecot.conf",
-                "puppet://$server/modules/site-dovecot/config/${dovecot_type}/dovecot.conf",
-                "puppet://$server/modules/site-dovecot/config/dovecot.conf",
-                "puppet://$server/modules/site/config/${operatingsystem}/dovecot.conf",
-                "puppet://$server/modules/site/config/dovecot.conf" ],
+    source => [ "puppet:///modules/site-dovecot/config/${fqdn}/dovecot.conf",
+                "puppet:///modules/site-dovecot/config/${dovecot_type}/dovecot.conf",
+                "puppet:///modules/site-dovecot/config/dovecot.conf",
+                "puppet:///modules/site/config/${operatingsystem}/dovecot.conf",
+                "puppet:///modules/site/config/dovecot.conf" ],
     require => Package['dovecot'],
     notify => Service['dovecot'],
     owner => root, group => mail, mode => 0640;

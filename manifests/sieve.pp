@@ -10,11 +10,11 @@ class dovecot::sieve {
     owner => root, group => 0, mode => 0644;
   }
   file{'/var/lib/dovecot-sieve/global':
-    source => [ "puppet://$server/modules/site-dovecot/sieve/${fqdn}/global/",
-                "puppet://$server/modules/site-dovecot/sieve/global/",
-                "puppet://$server/modules/dovecot/sieve/${operatingsystem}/global/",
-                "puppet://$server/modules/dovecot/sieve/global/",
-                "puppet://$server/modules/common/empty/" ],
+    source => [ "puppet:///modules/site-dovecot/sieve/${fqdn}/global/",
+                "puppet:///modules/site-dovecot/sieve/global/",
+                "puppet:///modules/dovecot/sieve/${operatingsystem}/global/",
+                "puppet:///modules/dovecot/sieve/global/",
+                "puppet:///modules/common/empty/" ],
     ensure => directory,
     recurse => true,
     purge => true,
@@ -23,10 +23,10 @@ class dovecot::sieve {
     owner => root, group => root, mode => 0644;
   }
   file{'/var/lib/dovecot-sieve/default.sieve':
-    source => [ "puppet://$server/modules/site-dovecot/sieve/${fqdn}/default.sieve",
-                "puppet://$server/modules/site-dovecot/sieve/default.sieve",
-                "puppet://$server/modules/dovecot/sieve/${operatingsystem}/default.sieve",
-                "puppet://$server/modules/dovecot/sieve/default.sieve" ],
+    source => [ "puppet:///modules/site-dovecot/sieve/${fqdn}/default.sieve",
+                "puppet:///modules/site-dovecot/sieve/default.sieve",
+                "puppet:///modules/dovecot/sieve/${operatingsystem}/default.sieve",
+                "puppet:///modules/dovecot/sieve/default.sieve" ],
     notify => Exec['compile_default_sieve'],
     owner => root, group => root, mode => 0644;
   }

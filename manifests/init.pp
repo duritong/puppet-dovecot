@@ -4,7 +4,10 @@
 
 # we take rpms from fedora
 class dovecot {
-  include dovecot::base
+  case $operatingsystem {
+    centos: { include dovecot::centos }
+    default: { include dovecot::base }
+  }
 
   if $dovecot_sql_sqlite or $dovecot_sql_pgsql or $dovecot_sql_mysql {
     include dovecot::sql

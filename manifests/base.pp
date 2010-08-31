@@ -7,8 +7,8 @@ class dovecot::base {
     source => [ "puppet:///modules/site-dovecot/config/${fqdn}/dovecot.conf",
                 "puppet:///modules/site-dovecot/config/${dovecot_type}/dovecot.conf",
                 "puppet:///modules/site-dovecot/config/dovecot.conf",
-                "puppet:///modules/site/config/${operatingsystem}/dovecot.conf",
-                "puppet:///modules/site/config/dovecot.conf" ],
+                "puppet:///modules/dovecot/config/${operatingsystem}/dovecot.conf",
+                "puppet:///modules/dovecot/config/dovecot.conf" ],
     require => Package['dovecot'],
     notify => Service['dovecot'],
     owner => root, group => mail, mode => 0640;

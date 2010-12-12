@@ -4,7 +4,8 @@ class dovecot(
   $pgsql = false,
   $mysql = false,
   $nagios_checks = {
-    'hostname' => 'fqdn',
+    'imap-hostname' => 'fqdn',
+    'pop3-hostname' => 'fqdn',
   },
   $munin_checks = true,
   $manage_shorewall = true
@@ -28,20 +29,25 @@ class dovecot(
   }
 
   if $dovecot::nagios_checks {
-    if $dovecot::nagios_checks['hostname'] == 'fqdn' {
-      $host_to_check = $fqdn
+    if $dovecot::nagios_checks['imap-hostname'] == 'fqdn' {
+      $imap_host_to_check = $fqdn
     } else {
-      $host_to_check = $dovecot::nagios_checks['hostname']
+      $imap_host_to_check = $dovecot::nagios_checks['imap-hostname']
+    }
+    if $dovecot::nagios_checks['pop3-hostname'] == 'fqdn' {
+      $pop3_host_to_check = $fqdn
+    } else {
+      $pop3_host_to_check = $dovecot::nagios_checks['pop3-hostname']
     }
     nagios::service{
       "check_imap":
-        check_command => "check_imap!${host_to_check}!143";
+        check_command => "check_imap!${imap_host_to_check}!143";
       "check_imap_ssl":
-        check_command => "check_imap_ssl!${host_to_check}!993";
+        check_command => "check_imap_ssl!${imap_host_to_check}!993";
       "check_pop3":
-        check_command => "check_pop3!${host_to_check}!110";
+        check_command => "check_pop3!${pop3_host_to_check}!110";
       "check_pop3_ssl":
-        check_command => "check_pop3_ssl!${host_to_check}!995";
+        check_command => "check_pop3_ssl!${pop3_host_to_check}!995";
     }
   }
 }

@@ -1,24 +1,26 @@
-# modules/skeleton/manifests/init.pp - manage dovecot stuff
-# Copyright (C) 2009 admin@immerda.ch
-#
-
 # we take rpms from fedora
-class dovecot {
+class dovecot(
+  $sqlite = false,
+  $pgsql = false,
+  $mysql = false,
+  $munin_checks = true,
+  $manage_shorewall = true
+){
   case $operatingsystem {
     centos: { include dovecot::centos }
     default: { include dovecot::base }
   }
 
-  if $dovecot_sql_sqlite or $dovecot_sql_pgsql or $dovecot_sql_mysql {
+  if $dovecot::sqlite or $dovecot::pgsql or $dovecot::mysql {
     include dovecot::sql
   }
 
-  if $use_shorewall {
+  if $dovecot::manage_shorewall {
     include shorewall::rules::pop3
     include shorewall::rules::imap
   }
 
-  if $use_munin {
+  if $dovecot::munin_checks {
     include dovecot::munin
   }
 }

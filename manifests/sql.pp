@@ -10,13 +10,13 @@ class dovecot::sql {
     owner => root, group => 0, mode => 0600;
   }
 
-  if $dovecot_sql_mysql{
+  if $dovecot::mysql {
     include ::dovecot::sql::mysql
   }
-  if $dovecot_sql_pgsql{
+  if $dovecot::pgsql {
     include ::dovecot::sql::pgsql
   }
-  if $dovecot_sql_sqlite{
+  if $dovecot::sqlite {
     include ::dovecot::sql::sqlite
   }
 }

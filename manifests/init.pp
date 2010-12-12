@@ -1,6 +1,6 @@
 # we take rpms from fedora
 class dovecot(
-  $dovecot_type = 'some_unkown_type',
+  $type = 'some_unkown_type',
   $sqlite = false,
   $pgsql = false,
   $mysql = false,

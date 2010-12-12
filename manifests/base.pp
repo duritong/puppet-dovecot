@@ -5,7 +5,7 @@ class dovecot::base {
 
   file{'/etc/dovecot.conf':
     source => [ "puppet:///modules/site-dovecot/config/${fqdn}/dovecot.conf",
-                "puppet:///modules/site-dovecot/config/${dovecot::dovecot_type}/dovecot.conf",
+                "puppet:///modules/site-dovecot/config/${dovecot::type}/dovecot.conf",
                 "puppet:///modules/site-dovecot/config/dovecot.conf",
                 "puppet:///modules/dovecot/config/${operatingsystem}/dovecot.conf",
                 "puppet:///modules/dovecot/config/dovecot.conf" ],

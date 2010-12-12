@@ -23,6 +23,10 @@ class dovecot(
   if $dovecot::manage_shorewall {
     include shorewall::rules::pop3
     include shorewall::rules::imap
+    if $type == 'proxy' {
+      include shorewall::rules::out::imap
+      include shorewall::rules::out::pop3
+    }
   }
 
   if $dovecot::munin_checks {

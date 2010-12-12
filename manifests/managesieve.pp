@@ -18,7 +18,7 @@ class dovecot::managesieve(
   }
 
   if $dovecot::managesieve::nagios_checks {
-    nagios::serve{"managesieve":
+    nagios::service{"managesieve":
       check_command => "check_tcp!${dovecot::managesieve::nagios_checks['sieve-hostname']}!2000";
     }
   }

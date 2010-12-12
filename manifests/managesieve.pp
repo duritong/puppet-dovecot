@@ -2,7 +2,7 @@ class dovecot::managesieve(
   $type = 'some_unknown_type',
   $manage_shorewall = true,
   $check_nagios = {
-    'hostname' => $fqdn,
+    'sieve-hostname' => $fqdn,
   }
 ) {
   package{'dovecot-managesieve':
@@ -19,7 +19,7 @@ class dovecot::managesieve(
 
   if $dovecot::managesieve::check_nagios {
     nagios::serve{"managesieve":
-      check_command => "check_tcp!${dovecot::managesieve::check_nagios['hostname]}!2000";
+      check_command => "check_tcp!${dovecot::managesieve::check_nagios['sieve-hostname']}!2000";
     }
   }
 }

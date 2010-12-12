@@ -1,7 +1,7 @@
 class dovecot::sql {
   file{'/etc/dovecot-sql.conf':
     source => [ "puppet:///modules/site-dovecot/sql/${fqdn}/dovecot-sql.conf",
-                "puppet:///modules/site-dovecot/sql/${dovecot_type}/dovecot-sql.conf",
+                "puppet:///modules/site-dovecot/sql/${dovecot::dovecot_type}/dovecot-sql.conf",
                 "puppet:///modules/site-dovecot/sql/dovecot-sql.conf",
                 "puppet:///modules/site/sql/${operatingsystem}/dovecot-sql.conf",
                 "puppet:///modules/site/sql/dovecot-sql.conf" ],

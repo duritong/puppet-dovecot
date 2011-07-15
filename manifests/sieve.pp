@@ -10,11 +10,6 @@ class dovecot::sieve {
     owner => root, group => 0, mode => 0644;
   }
   file{'/var/lib/dovecot-sieve/global':
-    source => [ "puppet:///modules/site-dovecot/sieve/${fqdn}/global/",
-                "puppet:///modules/site-dovecot/sieve/global/",
-                "puppet:///modules/dovecot/sieve/${operatingsystem}/global/",
-                "puppet:///modules/dovecot/sieve/global/",
-                "puppet:///modules/common/empty/" ],
     ensure => directory,
     recurse => true,
     purge => true,

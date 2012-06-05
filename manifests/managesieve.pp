@@ -2,7 +2,7 @@ class dovecot::managesieve(
   $type = 'some_unknown_type',
   $manage_shorewall = true,
   $nagios_checks = {
-    'sieve-hostname' => $fqdn,
+    'sieve-hostname' => $::fqdn,
   }
 ) {
   package{'dovecot-managesieve':

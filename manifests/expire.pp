@@ -1,21 +1,20 @@
-class dovecot::expire {
+class dovecot::expire(
+  $type = 'script',
+  $mail_location = 'absent',
+  $expire_days = '14',
+  $directories = 'Trash\|Junk'
+) {
   include ::dovecot
 
   file{'/etc/cron.daily/dovecot-expire':
     owner => root, group => 0, mode => 0755;
   }
-  if $dovecot_expire_type == 'legacy' or $dovecot_expire_type == 'mixed' {
-    case $dovecot_mail_location {
-      '': { fail("Need to set \$dovecot_mail_location on $fqdn!") }
-    }
-    case $dovecot_expire_dirs {
-      '': { $dovecot_expire_dirs = 'Trash\|Junk' }
-    }
-    case $dovecot_expire_days {
-      '': { $dovecot_expire_days = '14' }
+  if $dovecot::expire::type == 'legacy' or $dovecot::expire::type == 'mixed' {
+    case $dovecot::expire::mail_location {
+      'absent': { fail("Need to set \$mail_location on ${::fqdn}!") }
     }
     File['/etc/cron.daily/dovecot-expire']{
-      content => "find ${dovecot_mail_location} -regex '.*/\\.\\(${dovecot_expire_dirs}\\)\\(/.*\\)?\\/\\(cur\\|new\\)/.*' -type f -ctime +${dovecot_expire_days} -delete\n"
+      content => "find ${dovecot::expire::mail_location} -regex '.*/\\.\\(${dovecot::expire::directories}\\)\\(/.*\\)?\\/\\(cur\\|new\\)/.*' -type f -ctime +${dovecot::expire::days} -delete\n"
     }
   } else {
     File['/etc/cron.daily/dovecot-expire']{
@@ -23,11 +22,11 @@ class dovecot::expire {
     }
   }
 
-  if $dovecot_expire_type != 'legacy' {
+  if $dovecot::expire::type != 'legacy' {
     file{'/etc/dovecot-expire.conf':
-      source => [ "puppet:///modules/site-dovecot/expire/${fqdn}/dovecot-expire.conf",
-                  "puppet:///modules/site-dovecot/expire/dovecot-expire.conf",
-                  "puppet:///modules/dovecot/expire/${operatingsystem}/dovecot-expire.conf",
+      source => [ "puppet:///modules/site_dovecot/expire/${::fqdn}/dovecot-expire.conf",
+                  "puppet:///modules/site_dovecot/expire/dovecot-expire.conf",
+                  "puppet:///modules/dovecot/expire/${::operatingsystem}/dovecot-expire.conf",
                   "puppet:///modules/dovecot/expire/dovecot-expire.conf" ],
       require => Package['dovecot'],
       notify => Service['dovecot'],
@@ -40,8 +39,8 @@ class dovecot::expire {
     }
   }
 
-  case $dovecot_expire_type {
-    'legacy': { info("no need to include anything for legacy mode") }
+  case $dovecot::expire::type {
+    'legacy': { info("no need to include anything for legacy type") }
     'mixed': { include ::dovecot::expire::sqlite }
     default: { include ::dovecot::expire::sqlite }
   }

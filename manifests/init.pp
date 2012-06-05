@@ -5,13 +5,13 @@ class dovecot(
   $pgsql = false,
   $mysql = false,
   $nagios_checks = {
-    'imap-hostname' => $fqdn,
-    'pop3-hostname' => $fqdn,
+    'imap-hostname' => $::fqdn,
+    'pop3-hostname' => $::fqdn,
   },
   $munin_checks = true,
   $manage_shorewall = true
 ){
-  case $operatingsystem {
+  case $::operatingsystem {
     centos: { include dovecot::centos }
     default: { include dovecot::base }
   }

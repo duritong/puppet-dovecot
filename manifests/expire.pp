@@ -1,7 +1,7 @@
 class dovecot::expire(
   $type = 'script',
   $mail_location = 'absent',
-  $expire_days = '14',
+  $days = '14',
   $directories = 'Trash\|Junk'
 ) {
   include ::dovecot

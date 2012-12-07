@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Munin Plugin
 # to count logins to your dovecot mailserver
@@ -28,7 +28,7 @@
 ######################
 # Configuration
 ######################
-STAT_FILE=/var/lib/munin/plugin-state/plugin-dovecot.state
+STAT_FILE=${STAT_FILE:-/var/lib/munin/plugin-state/plugin-dovecot.state}
 EXPR_BIN=/usr/bin/expr
 LOGFILE=${logfile:-/var/log/mail.log}
 ######################
@@ -47,6 +47,8 @@ if [ "$1" = "config" ]; then
   echo 'login_ssl.label SSL Logins'
   echo 'login_imap.label IMAP Logins'
   echo 'login_pop3.label POP3 Logins'
+  echo 'login_imap_proxy.label IMAP Proxy Logins'
+  echo 'login_pop3_proxy.label POP3 Proxy Logins'
   echo 'connected.label Connected Users'
   exit 0
 fi
@@ -60,6 +62,8 @@ if [ ! -r $STAT_FILE ]; then
   echo "SSL=0" >> $STAT_FILE
   echo "IMAP=0" >> $STAT_FILE
   echo "POP3=0" >> $STAT_FILE
+  echo "IMAP_PROXY=0" >> $STAT_FILE
+  echo "POP3_PROXY=0" >> $STAT_FILE
 fi
 #############################
 
@@ -68,7 +72,7 @@ fi
 # Total Logins
 ######################
 echo -en "login_total.value "
-NEW_TOTAL=$(egrep 'dovecot.*Login' $LOGFILE | grep "`date '+%b %e'`" | sort | wc -l)
+NEW_TOTAL=$(egrep '[dovecot]?.*(Login|started proxying)' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
 OLD_TOTAL=$(grep TOTAL $STAT_FILE | cut -f2 -d '=')
 TOTAL=$($EXPR_BIN $NEW_TOTAL - $OLD_TOTAL)
 if [ $TOTAL -gt 0 ]; then
@@ -80,8 +84,8 @@ echo -n
 ######################
 # Connected Users
 ######################
-DISCONNECTS=$(egrep 'dovecot.*Disconnected' $LOGFILE | sort | wc -l)
-CONNECTS=$(egrep 'dovecot.*Login' $LOGFILE | sort | wc -l)
+DISCONNECTS=$(egrep '[dovecot]?.*(Disconnected|Connection closed|disconnecting)' $LOGFILE | sort | wc -l)
+CONNECTS=$(egrep '[dovecot]?.*(Login|started proxying)' $LOGFILE | sort | wc -l)
 DISCON=$($EXPR_BIN $CONNECTS - $DISCONNECTS)
 if [ $DISCON -lt 0 ]; then
   DISCON=0
@@ -93,7 +97,7 @@ echo -n
 # TLS Logins
 ######################
 echo -en "login_tls.value "
-NEW_TLS=$(egrep 'dovecot.*Login.*TLS' $LOGFILE | grep "`date '+%b %e'`" | sort | wc -l)
+NEW_TLS=$(egrep '[dovecot]?.*Login.*TLS' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
 OLD_TLS=$(grep TLS $STAT_FILE | cut -f2 -d '=')
 TLS=$($EXPR_BIN $NEW_TLS - $OLD_TLS)
 if [ $TLS -gt 0 ]; then
@@ -106,7 +110,7 @@ echo -n
 # SSL Logins
 ######################
 echo -en "login_ssl.value "
-NEW_SSL=$(egrep 'dovecot.*Login.*SSL' $LOGFILE | grep "`date '+%b %e'`" | sort | wc -l)
+NEW_SSL=$(egrep '[dovecot]?.*Login.*SSL' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
 OLD_SSL=$(grep SSL $STAT_FILE | cut -f2 -d '=')
 SSL=$($EXPR_BIN $NEW_SSL - $OLD_SSL)
 if [ $SSL -gt 0 ]; then
@@ -119,8 +123,8 @@ echo -n
 # IMAP Logins
 ######################
 echo -en "login_imap.value "
-NEW_IMAP=$(egrep 'dovecot.*imap.*Login' $LOGFILE | grep "`date '+%b %e'`" | sort | wc -l)
-OLD_IMAP=$(grep IMAP $STAT_FILE | cut -f2 -d '=')
+NEW_IMAP=$(egrep '[dovecot]?.*imap.*Login' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
+OLD_IMAP=$(grep 'IMAP=' $STAT_FILE | cut -f2 -d '=')
 IMAP=$($EXPR_BIN $NEW_IMAP - $OLD_IMAP)
 if [ $IMAP -gt 0 ]; then
   echo "$IMAP"
@@ -132,11 +136,37 @@ echo -n
 # POP3 Logins
 ######################
 echo -en "login_pop3.value "
-NEW_POP3=$(egrep 'dovecot.*pop3.*Login' $LOGFILE | grep "`date '+%b %e'`" | sort | wc -l)
-OLD_POP3=$(grep POP3 $STAT_FILE | cut -f2 -d '=')
+NEW_POP3=$(egrep '[dovecot]?.*pop3.*Login' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
+OLD_POP3=$(grep 'POP3=' $STAT_FILE | cut -f2 -d '=')
 POP3=$($EXPR_BIN $NEW_POP3 - $OLD_POP3)
 if [ $POP3 -gt 0 ]; then
   echo "$POP3"
+else
+  echo "0"
+fi
+echo -n
+######################
+# POP3 Proxy Logins
+######################
+echo -en "login_pop3_proxy.value "
+NEW_POP3_PROXY=$(egrep '[dovecot]?.*pop3.*started proxying' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
+OLD_POP3_PROXY=$(grep POP3_PROXY $STAT_FILE | cut -f2 -d '=')
+POP3_PROXY=$($EXPR_BIN $NEW_POP3_PROXY - $OLD_POP3_PROXY)
+if [ $POP3_PROXY -gt 0 ]; then
+  echo "$POP3_PROXY"
+else
+  echo "0"
+fi
+echo -n
+######################
+# IMAP Proxy Logins
+######################
+echo -en "login_imap_proxy.value "
+NEW_IMAP_PROXY=$(egrep '[dovecot]?.*imap*started proxying' $LOGFILE | grep "`date '+%b %d'`" | sort | wc -l)
+OLD_IMAP_PROXY=$(grep IMAP_PROXY $STAT_FILE | cut -f2 -d '=')
+IMAP_PROXY=$($EXPR_BIN $NEW_IMAP_PROXY - $OLD_IMAP_PROXY)
+if [ $IMAP_PROXY -gt 0 ]; then
+  echo "$IMAP_PROXY"
 else
   echo "0"
 fi
@@ -149,3 +179,5 @@ echo "TLS=$NEW_TLS" >> $STAT_FILE
 echo "SSL=$NEW_SSL" >> $STAT_FILE 
 echo "IMAP=$NEW_IMAP" >> $STAT_FILE
 echo "POP3=$NEW_POP3" >> $STAT_FILE
+echo "POP3_PROXY=$NEW_POP3_PROXY" >> $STAT_FILE
+echo "IMAP_PROXY=$NEW_IMAP_PROXY" >> $STAT_FILE

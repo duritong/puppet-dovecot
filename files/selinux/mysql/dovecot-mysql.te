@@ -1,0 +1,10 @@
+module dovecot-mysql 1.0;
+
+require {
+  type dovecot_auth_t;
+  type mysqld_port_t;
+  class tcp_socket name_connect;
+}
+
+#============= dovecot_auth_t ==============
+allow dovecot_auth_t mysqld_port_t:tcp_socket name_connect;

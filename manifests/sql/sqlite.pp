@@ -1,6 +1,9 @@
+# manages sqlite adaption
 class dovecot::sql::sqlite {
-  package{'dovecot-sqlite':
-    ensure => installed,
-    before => File['/etc/dovecot-sql.conf'],
+  if ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease < 6) {
+    package{'dovecot-sqlite':
+      ensure => installed,
+      before => File['/etc/dovecot/dovecot-sql.conf.ext'],
+    }
   }
 }

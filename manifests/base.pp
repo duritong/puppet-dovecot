@@ -14,7 +14,7 @@ class dovecot::base {
     require => Package['dovecot'],
     notify  => Service['dovecot'],
     owner   => root,
-    group   => $dovecot::shared_group,
+    group   => 0,
     mode    => '0640';
   }
   if ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease < 6) {
@@ -29,14 +29,14 @@ class dovecot::base {
         require => Package['dovecot'],
         before  => Service['dovecot'],
         owner   => dovecot,
-        group   => $dovecot::shared_group,
+        group   => mail,
         mode    => '0660';
       [ '/var/log/dovecot/error.log',
         '/var/log/dovecot/infos.log' ]:
         require => Package['dovecot'],
         before  => Service['dovecot'],
         owner   => root,
-        group   => $dovecot::shared_group,
+        group   => mail,
         mode    => '0660';
     }
 

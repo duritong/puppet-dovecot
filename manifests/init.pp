@@ -14,14 +14,6 @@ class dovecot(
   $manage_shorewall   = true
 ){
 
-  $shared_group = $::operatingsystem ? {
-    'CentOS'  => $::operatingsystemmajrelease ? {
-      '5'     => 'mail',
-      default => 'dovecot'
-    },
-    default   => 'dovecot'
-  }
-
   case $::operatingsystem {
     centos: { include dovecot::centos }
     default: { include dovecot::base }

@@ -11,7 +11,8 @@ class dovecot(
     'pop3-hostname' => $::fqdn,
   },
   $munin_checks       = true,
-  $manage_shorewall   = true
+  $manage_shorewall   = true,
+  $config_group       = 0,
 ){
 
   case $::operatingsystem {

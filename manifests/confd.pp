@@ -2,6 +2,7 @@
 define dovecot::confd(
   $ensure = 'present',
   $suffix = '',
+  $content = false,
 ){
   $filename = "${name}.conf${suffix}"
   file{"/etc/dovecot/conf.d/${filename}":

@@ -8,10 +8,18 @@ define dovecot::confd(
     ensure => $ensure,
   }
   if $ensure == 'present' {
+    if $content {
+      File["/etc/dovecot/conf.d/${filename}"]{
+        content => $content
+      }
+    } else {
+      File["/etc/dovecot/conf.d/${filename}"]{
+        source  => ["puppet:///modules/site_dovecot/conf.d/${::fqdn}/${filename}",
+                    "puppet:///modules/site_dovecot/conf.d/${dovecot::type}/${filename}",
+                    "puppet:///modules/site_dovecot/conf.d/${filename}", ]
+      }
+    }
     File["/etc/dovecot/conf.d/${filename}"]{
-      source  => ["puppet:///modules/site_dovecot/conf.d/${::fqdn}/${filename}",
-                  "puppet:///modules/site_dovecot/conf.d/${dovecot::type}/${filename}",
-                  "puppet:///modules/site_dovecot/conf.d/${filename}", ],
       require => Package['dovecot'],
       notify  => Service['dovecot'],
       owner   => root,

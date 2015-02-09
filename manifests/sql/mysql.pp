@@ -13,4 +13,7 @@ class dovecot::sql::mysql {
         before    => Service['dovecot'],
     }
   }
+  if $dovecot::manage_shorewall {
+    include shorewall::rules::out::mysql
+  }
 }

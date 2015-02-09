@@ -14,9 +14,9 @@ class dovecot::sql {
     }
   } else {
     File['/etc/dovecot/dovecot-sql.conf.ext']{
-      source  => ["puppet:///modules/site_dovecot/sql/${::fqdn}/dovecot-sql.conf",
-                  "puppet:///modules/site_dovecot/sql/${dovecot::type}/dovecot-sql.conf",
-                  'puppet:///modules/site_dovecot/sql/dovecot-sql.conf',
+      source  => ["puppet:///modules/${dovecot::site_source}/sql/${::fqdn}/dovecot-sql.conf",
+                  "puppet:///modules/${dovecot::site_source}/sql/${dovecot::type}/dovecot-sql.conf",
+                  "puppet:///modules/${dovecot::site_source}/sql/dovecot-sql.conf",
                   "puppet:///modules/site/sql/${::operatingsystem}/dovecot-sql.conf",
                   'puppet:///modules/site/sql/dovecot-sql.conf' ]
     }

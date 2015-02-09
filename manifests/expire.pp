@@ -28,8 +28,8 @@ class dovecot::expire(
   if $dovecot::expire::type != 'legacy' {
     file{
       '/etc/dovecot-expire.conf':
-        source  => [  "puppet:///modules/site_dovecot/expire/${::fqdn}/dovecot-expire.conf",
-                      'puppet:///modules/site_dovecot/expire/dovecot-expire.conf',
+        source  => [  "puppet:///modules/${dovecot::site_source}/expire/${::fqdn}/dovecot-expire.conf",
+                      "puppet:///modules/${dovecot::site_source}/expire/dovecot-expire.conf",
                       "puppet:///modules/dovecot/expire/${::operatingsystem}/dovecot-expire.conf",
                       'puppet:///modules/dovecot/expire/dovecot-expire.conf' ],
         require => Package['dovecot'],

@@ -30,8 +30,8 @@ class dovecot::sieve {
       group   => root,
       mode    => '0644';
     '/var/lib/dovecot-sieve/default.sieve':
-      source  => ["puppet:///modules/site_dovecot/sieve/${::fqdn}/default.sieve",
-                  'puppet:///modules/site_dovecot/sieve/default.sieve',
+      source  => ["puppet:///modules/${dovecot::site_source}/sieve/${::fqdn}/default.sieve",
+                  "puppet:///modules/${dovecot::site_source}/sieve/default.sieve",
                   "puppet:///modules/dovecot/sieve/${::operatingsystem}/default.sieve",
                   'puppet:///modules/dovecot/sieve/default.sieve' ],
       notify  => Exec['compile_default_sieve'],

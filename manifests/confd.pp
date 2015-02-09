@@ -1,8 +1,8 @@
 # manage a /etc/dovecot/conf.d file
 define dovecot::confd(
-  $ensure = 'present',
-  $suffix = '',
-  $content = false,
+  $ensure      = 'present',
+  $suffix      = '',
+  $content     = false,
 ){
   $filename = "${name}.conf${suffix}"
   file{"/etc/dovecot/conf.d/${filename}":
@@ -15,9 +15,10 @@ define dovecot::confd(
       }
     } else {
       File["/etc/dovecot/conf.d/${filename}"]{
-        source  => ["puppet:///modules/site_dovecot/conf.d/${::fqdn}/${filename}",
-                    "puppet:///modules/site_dovecot/conf.d/${dovecot::type}/${filename}",
-                    "puppet:///modules/site_dovecot/conf.d/${filename}", ]
+        source  => ["puppet:///modules/${dovecot::site_source}/conf.d/${::fqdn}/${filename}",
+                    "puppet:///modules/${dovecot::site_source}/conf.d/${dovecot::type}/${::operatingsystem}.${::operatingsystemmajrelease}/${filename}",
+                    "puppet:///modules/${dovecot::site_source}/conf.d/${dovecot::type}/${filename}",
+                    "puppet:///modules/${dovecot::site_source}/conf.d/${filename}", ]
       }
     }
     File["/etc/dovecot/conf.d/${filename}"]{

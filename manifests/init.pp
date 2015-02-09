@@ -13,6 +13,7 @@ class dovecot(
   $munin_checks       = true,
   $manage_shorewall   = true,
   $config_group       = 0,
+  $site_source        = 'site_dovecot',
 ){
 
   case $::operatingsystem {

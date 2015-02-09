@@ -13,4 +13,7 @@ class dovecot::sql::pgsql {
         before    => Service['dovecot'],
     }
   }
+  if $dovecot::manage_shorewall {
+    include shorewall::rules::out::postgres
+  }
 }

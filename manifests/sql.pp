@@ -22,12 +22,6 @@ class dovecot::sql {
     }
   }
 
-  if ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease < 6) {
-    File['/etc/dovecot/dovecot-sql.conf.ext']{
-      path => '/etc/dovecot-sql.conf'
-    }
-  }
-
   if $dovecot::mysql {
     include ::dovecot::sql::mysql
   }

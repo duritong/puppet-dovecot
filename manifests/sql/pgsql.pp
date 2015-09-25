@@ -5,14 +5,13 @@ class dovecot::sql::pgsql {
     before => File['/etc/dovecot/dovecot-sql.conf.ext'],
   }
 
-  if str2bool($::selinux) and ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease > 5) {
-    selinux::policy{
-      'dovecot-postgres':
-        te_source => 'puppet:///modules/dovecot/selinux/postgres/dovecot-postgres.te',
-        require   => Package['dovecot-pgsql'],
-        before    => Service['dovecot'],
-    }
+  selinux::policy{
+    'dovecot-postgres':
+      te_source => 'puppet:///modules/dovecot/selinux/postgres/dovecot-postgres.te',
+      require   => Package['dovecot-pgsql'],
+      before    => Service['dovecot'],
   }
+
   if $dovecot::manage_shorewall {
     include shorewall::rules::out::postgres
   }

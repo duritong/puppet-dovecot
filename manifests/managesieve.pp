@@ -8,14 +8,7 @@ class dovecot::managesieve(
   }
 ) {
 
-  if ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease < 6) {
-    package{'dovecot-managesieve':
-      ensure => installed,
-      before => Service['dovecot'],
-    }
-  } else {
-    include dovecot::pigeonhole
-  }
+  include dovecot::pigeonhole
 
   if $manage_shorewall {
     class{'shorewall::rules::managesieve':

@@ -17,31 +17,6 @@ class dovecot::base {
     group   => $dovecot::config_group,
     mode    => '0640';
   }
-  if ($::operatingsystem == 'CentOS') and ($::operatingsystemmajrelease < 6) {
-    File['/etc/dovecot/dovecot.conf']{
-      path => '/etc/dovecot.conf'
-    }
-  }
-  if !$dovecot::use_syslog {
-    file{
-      '/var/log/dovecot':
-        ensure  => directory,
-        require => Package['dovecot'],
-        before  => Service['dovecot'],
-        owner   => dovecot,
-        group   => mail,
-        mode    => '0660';
-      [ '/var/log/dovecot/error.log',
-        '/var/log/dovecot/infos.log' ]:
-        require => Package['dovecot'],
-        before  => Service['dovecot'],
-        owner   => root,
-        group   => mail,
-        mode    => '0660';
-    }
-
-    include dovecot::logrotate
-  }
 
   service{'dovecot':
     ensure => running,

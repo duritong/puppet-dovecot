@@ -14,10 +14,7 @@ class dovecot(
   $site_source        = 'site_dovecot',
 ){
 
-  case $::operatingsystem {
-    centos: { include dovecot::centos }
-    default: { include dovecot::base }
-  }
+  include dovecot::base
 
   if $dovecot::pgsql or $dovecot::mysql {
     include dovecot::sql

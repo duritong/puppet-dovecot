@@ -1,7 +1,0 @@
-# Here you can specify your dovecot command line options.
-#
-#OPTIONS=""
-#
-# If you want to set a certain ulimit for the dovecot process
-# set the following variable to that ulimit
-#DOVECOT_ULIMIT=1024

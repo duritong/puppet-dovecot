@@ -4,16 +4,18 @@ class dovecot::sieve {
   include dovecot::pigeonhole
   # create different path
   # so that delivery can happen
-  # under a different user than
-  # dovecot.
+  # under a different user/group
+  # than dovecot.
+  # AND choose a read only context
+  # for it
   selinux::fcontext{
     '/var/lib/dovecot-sieve(/.*)?':
-      setype => 'dovecot_var_lib_t';
+      setype => 'dovecot_var_run_t';
   } -> file{
     '/var/lib/dovecot-sieve':
       ensure  => directory,
       require => Package['dovecot-pigeonhole'],
-      seltype => 'dovecot_var_lib_t',
+      seltype => 'dovecot_var_run_t',
       owner   => 'root',
       group   => 0,
       mode    => '0644';
@@ -23,7 +25,7 @@ class dovecot::sieve {
       purge   => true,
       force   => true,
       notify  => Exec['compile_global_sieve'],
-      seltype => 'dovecot_var_lib_t',
+      seltype => 'dovecot_var_run_t',
       owner   => 'root',
       group   => 0,
       mode    => '0644';
@@ -33,7 +35,7 @@ class dovecot::sieve {
                   "puppet:///modules/dovecot/sieve/${::operatingsystem}/default.sieve",
                   'puppet:///modules/dovecot/sieve/default.sieve' ],
       notify  => Exec['compile_default_sieve'],
-      seltype => 'dovecot_var_lib_t',
+      seltype => 'dovecot_var_run_t',
       owner   => 'root',
       group   => 0,
       mode    => '0644';

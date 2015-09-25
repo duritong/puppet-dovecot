@@ -28,7 +28,4 @@ class dovecot::sql {
   if $dovecot::pgsql {
     include ::dovecot::sql::pgsql
   }
-  if $dovecot::sqlite {
-    include ::dovecot::sql::sqlite
-  }
 }

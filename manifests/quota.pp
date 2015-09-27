@@ -11,4 +11,10 @@ class dovecot::quota(
     group   => 0,
     mode    => '0755';
   }
+  selinux::policy{
+    'dovecot-quota-warning':
+      te_source => 'puppet:///modules/dovecot/selinux/quota-warning/dovecot-quota-warning.te',
+      require   => Package['dovecot'],
+      before    => Service['dovecot'],
+  }
 }

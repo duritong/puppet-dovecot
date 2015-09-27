@@ -1,0 +1,11 @@
+module dovecot-quota-warning 1.0;
+
+require {
+        type dovecot_t;
+        type dovecot_deliver_exec_t;
+        class file { read execute open getattr execute_no_trans };
+}
+
+#============= dovecot_t ==============
+allow dovecot_t dovecot_deliver_exec_t:file { read execute open getattr execute_no_trans };
+

@@ -1,9 +1,10 @@
 #!/bin/sh
 
 PERCENT=$1
+USER=$2
 FROM="postmaster@example.com"
-qwf="/tmp/quota.warning.$$"
 
+cat << EOF | /usr/libexec/dovecot/dovecot-lda -d $USER -o "plugin/quota=maildir:User quota:noenforcing"
 echo "From: $FROM
 To: $USER
 Subject: Your email quota is $PERCENT% full
@@ -18,7 +19,4 @@ Please clean up your mailbox.
 Volle Mailboxen werden keine Emails mehr empfangen.
 Full mailboxes will reject emails." >> $qwf
 
-cat $qwf | /usr/sbin/sendmail -f $FROM "$USER"
-rm -f $qwf
-
-exit 0
+EOF

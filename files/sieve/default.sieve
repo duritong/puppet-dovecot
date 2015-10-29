@@ -10,7 +10,7 @@ require [ "fileinto" ];
 # the global one will be disabled so you have to filter 
 # the spam in your own script.
 if header :is "X-Spam-Flag" "YES" {
-    fileinto "INBOX.spam";
+    fileinto "spam";
     stop; #---- this stops further processing; 
     #prevents sending replies and/or redirecting(forwarding)
 }

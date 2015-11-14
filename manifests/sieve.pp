@@ -44,7 +44,7 @@ class dovecot::sieve {
   exec{
     'compile_default_sieve':
       command     => 'sievec /var/lib/dovecot-sieve/default.sieve',
-      creates     => '/var/lib/dovecot-sieve/default.svbin';
+      refreshonly => true;
     'compile_global_sieve':
       command     => 'sievec /var/lib/dovecot-sieve/global/',
       refreshonly => true;

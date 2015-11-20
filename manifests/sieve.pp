@@ -1,7 +1,7 @@
 # manages a sieve installation
 class dovecot::sieve {
   include ::dovecot
-  include dovecot::pigeonhole
+  include ::dovecot::pigeonhole
   # create different path
   # so that delivery can happen
   # under a different user/group

@@ -8,6 +8,7 @@ class dovecot::centos inherits dovecot::base {
         gpgkey   => 'https://repo.dovecot.org/DOVECOT-REPO-GPG',
         gpgcheck => 1,
         enabled  => 1,
+        priority => 1,
         before   => Package['dovecot'],
     }
   }

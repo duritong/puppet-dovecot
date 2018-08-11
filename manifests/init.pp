@@ -1,20 +1,24 @@
 # we take rpms from fedora
 class dovecot(
-  $type               = 'some_unkown_type',
-  $pgsql              = false,
-  $mysql              = false,
-  $sql_config_content = false,
-  $nagios_checks      = {
-    'imap-hostname' => $::fqdn,
-    'pop3-hostname' => $::fqdn,
+  $type                      = 'some_unkown_type',
+  $pgsql                     = false,
+  $mysql                     = false,
+  $sql_config_content        = false,
+  $nagios_checks             = {
+    'imap-hostname' => $facts['fqdn'],
+    'pop3-hostname' => $facts['fqdn'],
   },
-  $munin_checks       = true,
-  $manage_shorewall   = true,
-  $config_group       = 0,
-  $site_source        = 'site_dovecot',
+  $munin_checks              = true,
+  $manage_shorewall          = true,
+  $config_group              = 0,
+  $site_source               = 'site_dovecot',
+  $upstream_repo_maj_version = undef,
 ){
 
-  include dovecot::base
+  case $facts['operatingsystem'] {
+    'CentOS': { include ::dovecot::centos }
+    default: { include dovecot::base }
+  }
 
   if $dovecot::pgsql or $dovecot::mysql {
     include dovecot::sql

@@ -17,24 +17,24 @@ class dovecot(
 
   case $facts['operatingsystem'] {
     'CentOS': { include ::dovecot::centos }
-    default: { include dovecot::base }
+    default: { include ::dovecot::base }
   }
 
   if $dovecot::pgsql or $dovecot::mysql {
-    include dovecot::sql
+    include ::dovecot::sql
   }
 
   if $dovecot::manage_shorewall {
-    include shorewall::rules::pop3
-    include shorewall::rules::imap
+    include ::shorewall::rules::pop3
+    include ::shorewall::rules::imap
     if $type == 'proxy' {
-      include shorewall::rules::out::imap
-      include shorewall::rules::out::pop3
+      include ::shorewall::rules::out::imap
+      include ::shorewall::rules::out::pop3
     }
   }
 
   if $dovecot::munin_checks {
-    include dovecot::munin
+    include ::dovecot::munin
   }
 
   if $dovecot::nagios_checks {

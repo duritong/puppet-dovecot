@@ -12,7 +12,7 @@ class dovecot(
   $manage_shorewall          = true,
   $config_group              = 0,
   $site_source               = 'site_dovecot',
-  $upstream_repo_maj_version = undef,
+  $upstream_repo_version     = undef,
 ){
 
   case $facts['operatingsystem'] {

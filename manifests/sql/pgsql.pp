@@ -1,8 +1,9 @@
 # manages pgsql adaption
 class dovecot::sql::pgsql {
   package{'dovecot-pgsql':
-    ensure => installed,
-    before => File['/etc/dovecot/dovecot-sql.conf.ext'],
+    ensure  => installed,
+    require => Package['dovecot'],
+    before  => File['/etc/dovecot/dovecot-sql.conf.ext'],
   }
 
   selinux::policy{

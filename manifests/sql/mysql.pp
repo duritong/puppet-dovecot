@@ -7,6 +7,6 @@ class dovecot::sql::mysql {
   }
 
   if $dovecot::manage_shorewall {
-    include shorewall::rules::out::mysql
+    include ::shorewall::rules::out::mysql
   }
 }

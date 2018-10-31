@@ -14,6 +14,6 @@ class dovecot::sql::pgsql {
   }
 
   if $dovecot::manage_shorewall {
-    include shorewall::rules::out::postgres
+    include ::shorewall::rules::out::postgres
   }
 }

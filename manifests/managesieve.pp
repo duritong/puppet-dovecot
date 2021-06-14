@@ -19,10 +19,5 @@ class dovecot::managesieve (
     nagios::service { 'managesieve':
       check_command => "check_managesieve!${nagios_checks['sieve-hostname']}";
     }
-    if $legacy_port {
-      nagios::service { 'managesieve_legacy':
-        check_command => "check_managesieve_legacy!${nagios_checks['sieve-hostname']}";
-      }
-    }
   }
 }

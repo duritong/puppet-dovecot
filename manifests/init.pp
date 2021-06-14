@@ -4,7 +4,7 @@ class dovecot (
   Boolean $pgsql = false,
   Boolean $mysql = false,
   Optional[String[1]] $sql_config_content = undef,
-  Optional[Hash] $nagios_checks = {
+  Optional[Variant[Hash[String,String],Boolean[false]]] $nagios_checks = {
     'imap-hostname' => $facts['networking']['fqdn'],
     'pop3-hostname' => $facts['networking']['fqdn'],
   },

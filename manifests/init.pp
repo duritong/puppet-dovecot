@@ -1,44 +1,43 @@
 # we take rpms from fedora
-class dovecot(
+class dovecot (
   $type                      = 'some_unkown_type',
   $pgsql                     = false,
   $mysql                     = false,
   $sql_config_content        = false,
   $nagios_checks             = {
-    'imap-hostname' => $facts['fqdn'],
-    'pop3-hostname' => $facts['fqdn'],
+    'imap-hostname' => $facts['networking']['fqdn'],
+    'pop3-hostname' => $facts['networking']['fqdn'],
   },
   $munin_checks              = true,
   $manage_shorewall          = true,
   $config_group              = 0,
   $site_source               = 'site_dovecot',
   $upstream_repo_version     = undef,
-){
-
-  case $facts['operatingsystem'] {
-    'CentOS': { include ::dovecot::centos }
-    default: { include ::dovecot::base }
+) {
+  case $facts['os']['name'] {
+    'CentOS': { include dovecot::centos }
+    default: { include dovecot::base }
   }
 
   if $dovecot::pgsql or $dovecot::mysql {
-    include ::dovecot::sql
+    include dovecot::sql
   }
 
   if $dovecot::manage_shorewall {
-    include ::shorewall::rules::pop3
-    include ::shorewall::rules::imap
+    include shorewall::rules::pop3
+    include shorewall::rules::imap
     if $type == 'proxy' {
-      include ::shorewall::rules::out::imap
-      include ::shorewall::rules::out::pop3
+      include shorewall::rules::out::imap
+      include shorewall::rules::out::pop3
     }
   }
 
   if $dovecot::munin_checks {
-    include ::dovecot::munin
+    include dovecot::munin
   }
 
   if $dovecot::nagios_checks {
-    nagios::service{
+    nagios::service {
       'check_imap':
         check_command => "check_imap!${dovecot::nagios_checks['imap-hostname']}!143";
       'check_imap_ssl':

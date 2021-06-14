@@ -2,7 +2,7 @@
 class dovecot::managesieve (
   String[1] $type = 'some_unknown_type',
   Boolean $manage_firewall = true,
-  Optional[Hash,Boolean[false]] $nagios_checks = {
+  Optional[Variant[Hash,Boolean[false]]] $nagios_checks = {
     'sieve-hostname' => $facts['networking']['fqdn'],
   }
 ) {

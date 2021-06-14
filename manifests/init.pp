@@ -1,18 +1,18 @@
 # we take rpms from fedora
 class dovecot (
-  $type                      = 'some_unkown_type',
-  $pgsql                     = false,
-  $mysql                     = false,
-  $sql_config_content        = false,
-  $nagios_checks             = {
+  String[1] $type = 'some_unkown_type',
+  Boolean $pgsql = false,
+  Boolean $mysql = false,
+  Variant[String[1],Enum[false]] $sql_config_content = false,
+  Variant[Hash,Enum[false]] $nagios_checks = {
     'imap-hostname' => $facts['networking']['fqdn'],
     'pop3-hostname' => $facts['networking']['fqdn'],
   },
-  $munin_checks              = true,
-  $manage_shorewall          = true,
-  $config_group              = 0,
-  $site_source               = 'site_dovecot',
-  $upstream_repo_version     = undef,
+  Boolean $munin_checks = true,
+  Boolean $manage_firewall = true,
+  Variant[String[1],Integer] $config_group = 0,
+  String[1] $site_source = 'site_dovecot',
+  Optional[String[1]] $upstream_repo_version = undef,
 ) {
   case $facts['os']['name'] {
     'CentOS': { include dovecot::centos }
@@ -23,12 +23,12 @@ class dovecot (
     include dovecot::sql
   }
 
-  if $dovecot::manage_shorewall {
-    include shorewall::rules::pop3
-    include shorewall::rules::imap
+  if $dovecot::manage_firewall {
+    include firewall::rules::pop3
+    include firewall::rules::imap
     if $type == 'proxy' {
-      include shorewall::rules::out::imap
-      include shorewall::rules::out::pop3
+      include firewall::rules::out::imap
+      include firewall::rules::out::pop3
     }
   }
 

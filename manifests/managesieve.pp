@@ -1,7 +1,7 @@
 # configure a managesieve installation
 class dovecot::managesieve (
   String[1] $type = 'some_unknown_type',
-  Boolean $manage_shorewall = true,
+  Boolean $manage_firewall = true,
   Variant[Hash,Enum[false]] $nagios_checks = {
     'sieve-hostname' => $facts['networking']['fqdn'],
   }

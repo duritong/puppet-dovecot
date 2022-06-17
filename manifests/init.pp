@@ -7,6 +7,7 @@ class dovecot (
   Optional[Variant[Hash[String,String],Boolean[false]]] $nagios_checks = {
     'imap-hostname' => $facts['networking']['fqdn'],
     'pop3-hostname' => $facts['networking']['fqdn'],
+    'ip4_and_ip6'   => ('ip6' in $facts['networking'] and $facts['networking']['ip6'] !~ /^fe80/)
   },
   Boolean $munin_checks = true,
   Boolean $manage_firewall = true,
@@ -37,15 +38,36 @@ class dovecot (
   }
 
   if $dovecot::nagios_checks {
-    nagios::service {
-      'check_imap':
-        check_command => "check_imap!${dovecot::nagios_checks['imap-hostname']}!143";
-      'check_imap_ssl':
-        check_command => "check_imap_ssl!${dovecot::nagios_checks['imap-hostname']}!993";
-      'check_pop3':
-        check_command => "check_pop3!${dovecot::nagios_checks['pop3-hostname']}!110";
-      'check_pop3_ssl':
-        check_command => "check_pop3_ssl!${dovecot::nagios_checks['pop3-hostname']}!995";
+    if $dovecot::nagios_checks['ip4_and_ip6'] {
+      nagios::service {
+        'check_imap_ip4':
+          check_command => "check_imap_ip4!${dovecot::nagios_checks['imap-hostname']}!143";
+        'check_imap_ip4_ssl':
+          check_command => "check_imap_ip4_ssl!${dovecot::nagios_checks['imap-hostname']}!993";
+        'check_pop3_ip4':
+          check_command => "check_pop3_ip4!${dovecot::nagios_checks['pop3-hostname']}!110";
+        'check_pop3_ip4_ssl':
+          check_command => "check_pop3_ip4_ssl!${dovecot::nagios_checks['pop3-hostname']}!995";
+        'check_imap_ip6':
+          check_command => "check_imap_ip6!${dovecot::nagios_checks['imap-hostname']}!143";
+        'check_imap_ip6_ssl':
+          check_command => "check_imap_ip6_ssl!${dovecot::nagios_checks['imap-hostname']}!993";
+        'check_pop3_ip6':
+          check_command => "check_pop3_ip6!${dovecot::nagios_checks['pop3-hostname']}!110";
+        'check_pop3_ip6_ssl':
+          check_command => "check_pop3_ip6_ssl!${dovecot::nagios_checks['pop3-hostname']}!995";
+      }
+    } else {
+      nagios::service {
+        'check_imap':
+          check_command => "check_imap!${dovecot::nagios_checks['imap-hostname']}!143";
+        'check_imap_ssl':
+          check_command => "check_imap_ssl!${dovecot::nagios_checks['imap-hostname']}!993";
+        'check_pop3':
+          check_command => "check_pop3!${dovecot::nagios_checks['pop3-hostname']}!110";
+        'check_pop3_ssl':
+          check_command => "check_pop3_ssl!${dovecot::nagios_checks['pop3-hostname']}!995";
+      }
     }
   }
 }
